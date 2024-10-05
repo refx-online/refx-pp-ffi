@@ -1,0 +1,17 @@
+[package]
+name = "refxpp"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+interoptopus = "0.14.14"
+refx-pp = { git = "https://github.com/refx-online/refx-pp-rs" }
+
+[dev-dependencies]
+interoptopus_backend_csharp = "0.14.14"
+interoptopus_backend_c = "0.14.13"
+interoptopus_backend_cpython = "0.14.14"
