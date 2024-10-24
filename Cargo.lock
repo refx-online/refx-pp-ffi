@@ -141,8 +141,8 @@ dependencies = [
 
 [[package]]
 name = "refx-pp"
-version = "0.2.8"
-source = "git+https://github.com/refx-online/refx-pp-rs?rev=4aa68c2e31f5f51d135386173568d60d53c6468d#4aa68c2e31f5f51d135386173568d60d53c6468d"
+version = "0.3.0"
+source = "git+https://github.com/refx-online/refx-pp-rs?rev=d9101517c26494d25c68759edb6659dee8fbdb82#d9101517c26494d25c68759edb6659dee8fbdb82"
 
 [[package]]
 name = "refxpp"

@@ -9,7 +9,7 @@ crate-type = ["cdylib", "rlib"]
 
 [dependencies]
 interoptopus = "0.14.14"
-refx-pp = { git = "https://github.com/refx-online/refx-pp-rs", rev = "4aa68c2e31f5f51d135386173568d60d53c6468d" }
+refx-pp = { git = "https://github.com/refx-online/refx-pp-rs", rev = "d9101517c26494d25c68759edb6659dee8fbdb82" }
 
 [dev-dependencies]
 interoptopus_backend_csharp = "0.14.14"

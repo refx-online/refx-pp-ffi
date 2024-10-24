@@ -1,6 +1,5 @@
 use refx_pp::{
-    osu_2019::{stars::OsuPerformanceAttributes, OsuPP},
-    AnyPP, Beatmap, GameMode, PerformanceAttributes,
+    osu_2019::{stars::OsuPerformanceAttributes, OsuPP}, osu_2019_2::{self, FxPP}, AnyPP, Beatmap, GameMode, PerformanceAttributes
 };
 use interoptopus::{
     extra_type, ffi_function, ffi_type, function, patterns::option::FFIOption, Inventory,
@@ -40,6 +39,13 @@ impl CalculatePerformanceResult {
             stars: attributes.difficulty.stars,
         }
     }
+
+    fn from_fx_attributes(attributes: osu_2019_2::stars::OsuPerformanceAttributes) -> Self {
+        Self {
+            pp: attributes.pp,
+            stars: attributes.difficulty.stars,
+        }
+    }
 }
 
 #[ffi_function]
@@ -57,6 +63,7 @@ pub unsafe extern "C" fn calculate_score(
     hdr: bool,
     tw: u32,
     cs: bool,
+    notrefx: bool
 ) -> CalculatePerformanceResult {
     let beatmap_path = CStr::from_ptr(beatmap_path).to_str().unwrap();
     let beatmap = Beatmap::from_path(beatmap_path).unwrap();
@@ -82,6 +89,21 @@ pub unsafe extern "C" fn calculate_score(
 
         let rosu_result = calculator.calculate();
         CalculatePerformanceResult::from_rx_attributes(rosu_result)
+    } else if notrefx {
+        let mut calculator = FxPP::new_from_map(&beatmap);
+        calculator = calculator
+            .mods(mods)
+            .combo(max_combo as usize)
+            .misses(miss_count as usize);
+
+        if let Some(passed_objects) = passed_objects.into_option() {
+            calculator = calculator.passed_objects(passed_objects as usize);
+        }
+        
+        calculator = calculator.accuracy(accuracy as f32);
+
+        let rosu_result = calculator.calculate();
+        CalculatePerformanceResult::from_fx_attributes(rosu_result)
     } else {
         let mut calculator = AnyPP::new(&beatmap);
         calculator = calculator
